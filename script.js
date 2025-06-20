@@ -1,58 +1,91 @@
-let products = [
-  { id: 1, name: "T-Shirt", price: 299 },
-  { id: 2, name: "Shoes", price: 999 },
-  { id: 3, name: "Backpack", price: 499 },
+const products = [
+  { id: 1, name: "Wireless Mouse", price: 499, image: "images/mouse.jpg" },
+  { id: 2, name: "Keyboard", price: 899, image: "images/keyboard.jpg" },
+  { id: 3, name: "Headphones", price: 1299, image: "images/headphones.jpg" },
+  { id: 4, name: "Smart Watch", price: 1999, image: "images/watch.jpg" }
 ];
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-function displayProducts() {
-  let container = document.getElementById("products");
+// Display products
+function showProducts() {
+  const container = document.getElementById("product-list");
   if (!container) return;
-  products.forEach((product) => {
-    let div = document.createElement("div");
+
+  products.forEach(p => {
+    const div = document.createElement("div");
     div.className = "product";
     div.innerHTML = `
-      <h3>${product.name}</h3>
-      <p>₹${product.price}</p>
-      <button onclick="addToCart(${product.id})">Add to Cart</button>
+      <img src="${p.image}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <p>₹${p.price}</p>
+      <button onclick="addToCart(${p.id})">Add to Cart</button>
     `;
     container.appendChild(div);
   });
+
+  updateCartCount();
 }
 
 function addToCart(id) {
-  let product = products.find(p => p.id === id);
-  cart.push(product);
+  const product = products.find(p => p.id === id);
+  const existing = cart.find(item => item.id === id);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
   localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Added to cart!");
+  alert(`${product.name} added to cart`);
+  updateCartCount();
 }
 
-function displayCart() {
-  let container = document.getElementById("cart-items");
-  let total = 0;
+function updateCartCount() {
+  const countSpan = document.getElementById("cart-count");
+  if (countSpan) {
+    countSpan.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+  }
+}
+
+// Display Cart Items
+function showCartItems() {
+  const container = document.getElementById("cart-items");
   if (!container) return;
+
   container.innerHTML = "";
+  let total = 0;
+
   cart.forEach((item, index) => {
-    total += item.price;
-    container.innerHTML += `<p>${item.name} - ₹${item.price} <button onclick="removeItem(${index})">Remove</button></p>`;
+    total += item.price * item.qty;
+    container.innerHTML += `
+      <div>
+        <h3>${item.name} (x${item.qty}) - ₹${item.price * item.qty}</h3>
+        <button onclick="removeFromCart(${index})">Remove</button>
+      </div>
+      <hr>
+    `;
   });
-  document.getElementById("total").textContent = total;
+
+  document.getElementById("cart-total").textContent = total;
 }
 
-function removeItem(index) {
+function removeFromCart(index) {
   cart.splice(index, 1);
   localStorage.setItem("cart", JSON.stringify(cart));
-  displayCart();
+  showCartItems();
+  updateCartCount();
 }
 
 function checkout() {
-  alert("Order Placed!");
+  alert("Order Placed Successfully!");
+  cart = [];
   localStorage.removeItem("cart");
-  location.reload();
+  showCartItems();
+  updateCartCount();
 }
 
 window.onload = function () {
-  displayProducts();
-  displayCart();
+  showProducts();
+  showCartItems();
+  updateCartCount();
 };
