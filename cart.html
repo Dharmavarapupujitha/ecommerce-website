@@ -2,15 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My Cart</title>
+  <title>Your Cart</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Your Cart</h1>
-  <div id="cart-items"></div>
-  <h3>Total: ₹<span id="total">0</span></h3>
-  <button onclick="checkout()">Checkout</button>
-  <a href="index.html">Back to Shop</a>
+  <header>
+    <h1>Your Cart</h1>
+    <nav>
+      <a href="index.html">🏠 Home</a>
+    </nav>
+  </header>
+  <main>
+    <div id="cart-items"></div>
+    <h2>Total: ₹<span id="cart-total">0</span></h2>
+    <button onclick="checkout()">Checkout</button>
+  </main>
   <script src="script.js"></script>
 </body>
 </html>
