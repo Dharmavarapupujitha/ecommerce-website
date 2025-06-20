@@ -2,13 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Simple E-Commerce</title>
+  <title>ShopNow - Home</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🛒 My E-Commerce Store</h1>
-  <div id="products" class="product-container"></div>
-  <a href="cart.html">View Cart</a>
+  <header>
+    <h1>🛍️ ShopNow</h1>
+    <nav>
+      <a href="cart.html">🛒 Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+  <main>
+    <div class="product-container" id="product-list"></div>
+  </main>
   <script src="script.js"></script>
 </body>
 </html>
+
